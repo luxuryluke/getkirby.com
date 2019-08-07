@@ -154,6 +154,7 @@
 
 @include mq(to m) {
   .menu-toggle {
+    color: inherit;
     cursor: pointer;
     height: 14px;
     position: relative;
