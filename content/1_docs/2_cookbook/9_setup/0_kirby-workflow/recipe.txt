@@ -1,0 +1,223 @@
+Title: Kirby workflow considerations & tips
+
+----
+
+Published: 2019-08-18
+
+----
+
+Description: Things to understand and keep in mind when creating a web project with Kirby
+
+----
+
+Text:
+
+Everyone has their own way of going about things. What works for you, might not work for others. And the things to consider vary for each project, depending on whether you are migrating from another system or whether you are trying to set things up from scratch, whether your project is small or really huge, and so on.
+
+So this recipe is not so much about best practices, it is rather a recap of how Kirby works, what you might want to keep in mind when you start your project with Kirby, what questions you might want to ask yourself and about possible approaches.
+
+## It's all about your project
+
+Kirby is all about giving you the freedom and the tools to create what you want, the way you want–for yourself or your clients. The philosophy is to keep things as simple as possible and to add only what is needed. You can start with a very basic setup and then extend later when new requirements come up.
+
+However, this freedom to create also means that you basically start from scratch and then build your project step by step, a bit like building with Lego. It means that you need to know HTML and CSS, and some PHP (or be prepared to learn what you need along the way). While there are some themes out there for Kirby that can get you jump started (but not thousands of them), you will have to touch code to make changes if these themes don't fit your use case 100%. The idea is to empower you to create your own unique thing, not make your project look the same as thousands of others out there.
+
+## All files and folders
+
+Kirby is a flat-file CMS. That means, your content lives in files and folders, not in a database.
+
+Inside those folders, there are text files with a name and an extension, for example, `projects.txt`.  These file names can be different for each page, or multiple pages can share the same text file name. Each content file name therefore represents a page **type**.
+
+(columns…)
+Example content folder structure:
+
+
+```filesystem
+/content/
+  /home/
+    home.txt
+  /projects/
+    projects.txt
+    /project-a
+      project.txt
+    /project-b
+      project.txt
+    /project-c
+      project.txt    
+  /blog/
+    blog.txt
+    /article-a
+      article.txt
+    /article-b
+      article.txt  
+  /about/
+    about.txt
+```
+
+++++
+
+Page blueprints for this structure
+
+```filesystem
+/site/
+  /blueprints/
+    /pages/
+      about.yml
+      article.yml
+      blog.yml
+      default.yml
+      home.yml
+      project.yml
+      projects.yml
+```
+
+(…columns)
+
+Apart from these content folders, there is a second important folder in your installation: the `/site` folder.
+
+## The role of filenames
+
+These file names are important, because the whole Kirby system is based on file names. In fact, there is a strong tie between content and templates.
+
+If you create a page with a given content file name, this page will be renderend in the frontend with a PHP (glossary: template text: template) of the same name (if it exists, otherwise with the `default.php` template), only with the extension `.php`.
+
+In the same way, if you create a new page in the Panel with a (glossary:blueprint text: blueprint) called `whatever.yml`, the resulting content file name will be `whatever.txt`. Here are some examples:
+
+| Blueprint<br>(`/site/blueprints`) | Text file<br>(`content/...`) | Template <br>(`/site/templates`)| Controller <br>(`/site/controllers`) | Model <br>(`/site/models`)
+| ---- | ---- | ---- | ---- | ----
+| Defines the form fields for the Panel | Contains the content | Renders the content on frontend | Contains the logic if required | Extends the default page object
+| default.yml | default.txt | default.php | default.php | default.php
+| projects.yml | projects.txt | projects.php | projects.php | projects.php
+| blog.yml | blog.txt | blog.php | blog.php | blog.php
+
+## Structure is not for everyone, but…
+
+Some people always start with a basic content folder structure. Other start with creating the blueprints for the Panel. It doesn't really matter where you start, and you should do what works best for you, but having a basic idea of your final structure helps a lot.
+
+Here are some questions that you might want to ask yourself:
+
+- What are the main pages?
+- Which pages are basically only containers for subpages but do not have any content of their own (for example a blog page that shows a list of articles where the articles themselves are subpages)? Should these subpages be accessible via their own URL or only shown on the parent page?
+- Which pages are containers for content that comes from other pages (for example a home page with different sections made from different parts of the site)?
+- Is a flat structure with a couple of main pages sufficient? Or is it a more complex site that requires a deeply nested tree structure?
+- Which page types need what sort of content? Some pages maybe only have a textarea field for long text, others might be a lot more structured with different types of content (glossary: field text: fields).
+- Which page types should share the same structure–and hence the same (glossary: blueprint text: blueprint)?
+- Are there any fields/tabs/sections that are always the same or appear in multiple areas, so that you can create blueprint "partials" for reuse?
+
+The beauty is that all these different structures can be built with Kirby and there is hardly any limitation. You might not be able to answer all the question right from the beginning, but these types of questions can guide you when building the different parts of your site.
+
+
+<info>
+- You do not have to create this structure manually in the file system, you might just as well outline it in your head or on a piece of paper. 
+
+- Also, you can make changes any time (add/delete/restructure your page structure, add/delete fields etc.). But the more detailed your initial plan, the less work you might have with modifying stuff as you go along. If you remove a field from a blueprint, you probably want to (link: docs/cookbook/extensions/content-file-cleanup text: remove them from the content files) as well to get rid of outdated content and you probably have to make changes in templates, snippets or controllers as well.
+
+- If structure is not your thing, you might as well just start building…
+</info>
+
+## The implications of changing folder names
+
+Folder names (the so-called "slugs") are important as well. Folder names will be part of the URL of a page.
+
+Examples:
+
+(here some examples)
+
+Therefore, if you change the name of the folder (directly in the file system, through the Panel or programmatically), you also change the URL of the page. This doesn't matter so much during development, but can affect SEO if it happens in production.
+
+There are also some other implications:
+
+- If you store references to a page, these are usually stored with their ID. That means, if you change the folder name, the reference you stored will no longer be valid.
+- The same is true if you use the ID to find a page in your templates, blueprints, controllers etc. with code like `kirby.page("photography")`.
+- If is also quite common to use page IDs as class names for styling. If the ID changes, the styles will no longer apply.
+
+There are ways to deal with or prevent such issues, but you should be aware of them. 
+
+- To prevent invalid references, many people use a plugin to create unique, permanent Auto-IDs for pages which are then stored instead of the default ID. 
+- The last two issues can be dealt with by preventing users from deleting or renaming a page, or by using other references like the intended template etc.
+
+## Fields
+
+### Field names
+Field names can sometimes lead to confusion. Ok, field names may only be alpha-numeric and contain underscores, that's one thing. But field names can also otherwise be a bit tricky. If, for example, you set up a `files` field like this:
+
+```yaml
+fields:
+  image:
+    type: files
+    max: 1
+    query: page.images
+```
+
+If you now call this field in your template like this…
+
+```php
+<?= $page->image()->toFile() ?>
+```
+
+…you will probably be surprised not to see the image you selected, because the `image()` method is a native Kirby method and will render the first image in the file system, no matter what you selected in your field. Since there a quite a few Kirby methods, it is easy to accidentally pick such method as your field name.
+
+There are basically two ways to deal with this:
+
+- Call such fields using the `content()` method: 
+    `$page->content()->image()->toFile()`
+- Prevent such issues by generally prefixing all your field names: 
+    `xy_image` instead of `image`
+
+## Field types
+
+- how field content is stored and what that means when changing types
+
+## Sections or fields
+
+Pages and files can be organized in the Panel using files/pags fields or files/pages sections. It is important to understand the difference between these two to make informed decisions when to use what.
+
+### Pages section vs. pages field
+
+#### Pages section
+
+- Shows a list of existing pages with an option to create new pages.
+- Pages in a pages section can only have a single parent page which is defined with the `parent` option.
+- Pages are filterable by their template + status only.
+- A pages section doesn't store anything in the content file.
+
+#### Pages field
+
+- Is basically a select field that allows selecting pages from a given set of pages.
+- The selectable pages can be from different parents, the set is defined via the `query` option. If no query is defined, the field options default to the children of the current page.
+- The ID(s) of the selected page(s) are stored in the content file.
+- Currently there is no option to create new pages from a pages field.
+- A typical use case is creating references between pages, e.g. to manually select related pages.
+
+## Files section vs. files field
+
+### Files field
+
+- Select one or more files from a (larger) set of files
+- The ID(s) of the selected file(s) are stored in the page’s content file
+- Upload a single file at a time, the newly uploaded file is then automatically selected
+- Deleting a file uploaded via the files field is only possible via the file view (or through a files section), not directly from the files field
+- Templates can be assigned to uploaded files via the upload option
+- The files set to select from can be defined using the `query` option; the `query` allows you to fetch files from different parents and to filter the set by any criteria; if no query is set, the field defaults to files of the current page
+- You can only upload to a single page; default parent is the current page
+
+### Files section
+
+- Upload one or more files at once to a single parent
+- Files can only be uploaded to a single page; the destination is set with the `parent`option
+- Files can be filtered by template only
+- You can limit what type of files can be uploaded with the `accept` option in the given files template
+- Files are only uploaded to the given parent, the IDs of the uploaded files are not stored anywhere
+
+## The media folder
+
+Why, how etc.
+
+
+## Performance considerations
+
+## Going beyond with Virtual pages
+
+
+
+
