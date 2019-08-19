@@ -22,6 +22,8 @@ Kirby is all about giving you the freedom and the tools to create what you want,
 
 However, this freedom to create also means that you basically start from scratch and then build your project step by step, a bit like building with Lego™. It means that you need to know the basics like HTML and CSS, and some PHP (or be prepared to learn what you need along the way). While there are some themes out there for Kirby that can get you jump-started (but not thousands of them), you will have to touch code to make changes if these themes don't fit your use case 100%. The idea behind Kirby is to empower you to create your own unique thing, not make your project look the same as thousands of others out there.
 
+(screenshot: from-blueprint-to-frontend.png)
+
 ## All files and folders
 
 Kirby is a flat-file CMS. That means, your content lives in files and folders, not in a database.
@@ -73,6 +75,7 @@ Page blueprints for this structure
 
 (…columns)
 
+
 Apart from these content folders, there is a second important folder in your installation: the `/site` folder.
 
 ## The role of filenames
@@ -89,6 +92,7 @@ In the same way, if you create a new page in the Panel with a (glossary:blueprin
 | default.yml | default.txt | default.php | default.php | default.php
 | projects.yml | projects.txt | projects.php | projects.php | projects.php
 | blog.yml | blog.txt | blog.php | blog.php | blog.php
+
 
 ## Structure is not for everyone, but…
 
@@ -263,6 +267,5 @@ Why, how etc.
 ----
 Whatelse:
 
-## The Panel dashboard
-
-Titles: Kirby in a nutshell or what you wished you had known when you started your first Kirby project
+- the Panel dashboard
+- changing templates => consequences
