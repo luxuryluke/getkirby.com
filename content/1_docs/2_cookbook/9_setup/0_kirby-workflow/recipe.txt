@@ -22,8 +22,6 @@ Kirby is all about giving you the freedom and the tools to create what you want,
 
 However, this freedom to create also means that you basically start from scratch and then build your project step by step, a bit like building with Lego™. It means that you need to know the basics like HTML and CSS, and some PHP (or be prepared to learn what you need along the way). While there are some themes out there for Kirby that can get you jump-started (but not thousands of them), you will have to touch code to make changes if these themes don't fit your use case 100%. The idea behind Kirby is to empower you to create your own unique thing, not make your project look the same as thousands of others out there.
 
-(screenshot: from-blueprint-to-frontend.png)
-
 ## All files and folders
 
 Kirby is a flat-file CMS. That means, your content lives in files and folders, not in a database.
@@ -82,6 +80,8 @@ Apart from these content folders, there is a second important folder in your ins
 
 These file names are important, because the whole Kirby system is based on file names. In fact, there is a strong tie between content and templates.
 
+(screenshot: from-blueprint-to-frontend.png)
+
 If you create a page with a given content file name, this page will be rendered in the frontend with a PHP (glossary: template text: template) of the same name (if it exists, otherwise with the `default.php` template), only with the extension `.php`.
 
 In the same way, if you create a new page in the Panel with a (glossary:blueprint text: blueprint) called `whatever.yml`, the resulting content file name will be `whatever.txt`. Here are some examples:
@@ -96,7 +96,7 @@ In the same way, if you create a new page in the Panel with a (glossary:blueprin
 
 ## Structure is not for everyone, but…
 
-Some people always start with a basic content folder structure. Other start with creating the blueprints for the Panel. It doesn't really matter where you start, and you should do what works best for you, but having a basic idea of your final structure helps a lot.
+Some people always start with a basic content folder structure. Others start with creating the blueprints for the Panel. It doesn't really matter where you start, and you should do what works best for you, but having a basic idea of your final structure helps a lot.
 
 Here are some questions that you might want to ask yourself:
 
@@ -107,7 +107,7 @@ Here are some questions that you might want to ask yourself:
 - Which page types need what sort of content? Some pages maybe only have a textarea field for long text, others might be a lot more structured with different types of content (glossary: field text: fields).
 - Which page types should share the same structure–and hence the same (glossary: blueprint text: blueprint)?
 - Are there any fields/tabs/sections that are always the same or appear in multiple areas, so that you can create blueprint "partials" for reuse?
-- What sort of global content do I need and where to store it ? (spoiler: in `site.txt`)
+- What sort of global content do you need and where to store it ? (spoiler: in `site.txt`)
 
 The beauty is that all these different structures can be built with Kirby and there is hardly any limitation. You might not be able to answer all the question right from the beginning, but these types of questions can guide you when building the different parts of your site.
 
@@ -141,10 +141,10 @@ Therefore, if you change the name of the folder (directly in the file system, th
 
 There are ways to deal with or prevent such issues, for example:
 
-- To prevent invalid references, you can use custom, uniquue permanent identifiers that you add manually or you can use a (link: https://github.com/bnomei/kirby3-autoid text: plugin) to create Auto-IDs which are then stored instead of the default ID. This permanent identifier can also be used to query pages.
+- To prevent invalid references, you can use custom, unique permanent identifiers that you add manually or you can use a (link: https://github.com/bnomei/kirby3-autoid text: plugin) to create Auto-IDs which are then stored instead of the default ID. This permanent identifier can also be used to query pages.
 - Another option would be to prevent deleting or renaming pages, or by using other references like the intended template etc.
 
-## Fields
+## So many fields
 
 (screenshot: panel-form-fields.png)
 
@@ -165,22 +165,26 @@ If you now call this field in your template like this…
 <?= $page->image()->toFile() ?>
 ```
 
-…you will probably be surprised not to see the image you selected, because the `image()` method is a native Kirby method and will render the first image in the file system, no matter what you selected in your field. Since there a quite a few Kirby methods, it is easy to accidentally pick such method as your field name.
+…you will probably be surprised not to see the image you selected, because the `image()` method is a native Kirby method and will render the first image in the file system, no matter what you selected in your field. Since there a quite a few Kirby methods, it is easy to accidentally pick such a method as your field name.
 
 There are basically two ways to deal with this:
 
-- Call such fields using the `content()` method: 
-    `$page->content()->image()->toFile()`
-- Prevent such issues by generally prefixing all your field names: 
-    `xy_image` instead of `image`
+- Call such fields with the `content()` method: `$page->content()->image()->toFile()`
+- Prevent such issues by generally prefixing all your field names: `xy_image` instead of `image`
 
-### Field types
+### Field types, blueprints and templates
 
-- how field content is stored and what that means when changing types
+Different field types store their content in different ways. While a `text` field stores just a string, a `tags` or `multiselect` field stores a comma separated list of values, and a `pages/files` field or a `structure` field store their content in YAML format. The (link: text: editor) field even stores its content in JSON format. Kirby comes with useful (link: docs/reference/templates/field-methods text: field methods) which convert these different values into something usable in your templates. 
+
+This is all fine as long as you stick with your field types. However, if you decide to make changes to field types in a blueprint during development, or you or your users change templates, you have to be a bit careful.
+
+- Make sure that the templates that a user can change to are compatible regarding the storage value of their content fields
+- Keep in mind that content is deleted if the field does not exist in the destination template.
+
 
 ## Sections or fields?
 
-Pages and files can be organized in the Panel using files/pags fields or files/pages sections. It is important to understand the difference between these two to make informed decisions when to use what.
+Pages and files can be organized in the Panel using files/pages fields or files/pages sections. It is important to understand the difference between these two types to make informed decisions when to use what.
 
 ### Pages section vs. pages field
 
@@ -223,6 +227,12 @@ Pages and files can be organized in the Panel using files/pags fields or files/p
 - You can limit what type of files can be uploaded with the `accept` option in the given files template
 - Files are only uploaded to the given parent, the IDs of the uploaded files are not stored anywhere
 
+## The Panel dashboard
+
+The Panel dashboard is the first page users get to see when they access the Panel. In it's most basic form, it provides a sort of sitemap to all or the most important pages of the site and can also contain fields for global information like a top level SEO title and description, the company name and address etc., that is information that is not tied to a particular page.
+
+The form fields and sections for the dashboard are defined in the `/site/blueprints/site.yml` blueprint. The text file for this special "page" (`site.txt`), the `$site` object, lives directly in the content folder and can host media files as well.
+
 ## Multi-section pages (type one-pager)
 
 One-pager websites or generally pages that contain different sections (often with repeating types of content) can be realized in multiple ways:
@@ -259,16 +269,33 @@ Options to circumvent some disadvantages:
 
 ## The media folder
 
-Why, how etc.
+Whenever you upload a file to a page via the Panel, the file is uploaded to the content folder. However, as soon as the URL of the file is called in the browser, the file is moved to the media folder. Also, all thumbnails are created on the fly and stored in the media folder. Therefore, the media folder needs to be publicly accessible within the document root, while you can put the content folder (and most of the other folders) above the document root for better security (see [custom folder setup](/docs/guide/configuration#custom-folder-setup)).
 
+While this setup needs more space on the server, it has (link: text: several advantages).
+
+## Multilanguage
+
+...
+
+<info>
+Never ever change the default language if content is already in place. the swap in the defaults will leave you with a huge number of unfilled fields.
+</info>
 
 ## Performance considerations
 
-## Going beyond with Virtual pages
+The file system is really powerful and fast and creating web projects with thousands or ten thousands of pages is no usally no problem. However, these thousand of pages shouldn't all reside in the same parent but rather be distributed in a tree-like structure. There is no hard limit as to how many folders should be in a single parent as this also depends on the performance of the server and the number and size of media files.
+
+Beyond a certain size, try to avoid calling the `$site->index()` method because it reads the entire folder structure including all files which can result in big performance issues.
+
+Also, use (link: docs/guide/cache text: caching) wherever possible to improve performance.
+
+## Going beyond with virtual pages
+
+At it's heart, Kirby is file-based CMS, we already said that somewhere at the beginning of this long winding article, right? But Kirby wouldn't be Kirby if that was the limit. Where file-based storage is too limiting, add a database. If you want to integrate content from other sources like an API, a feed, a spreadsheet–go ahead.
+
+All (link: docs/guide/virtual-pages text: virtual pages) are seamlessly integrated in Kirby. Routing works out of the box, they are included in API requests and they are even manageable in the panel!
+
+Get started! Any questions? Visit our (link: forum.getkirby.com text: forum) and ask us anything.
 
 
-----
-Whatelse:
 
-- the Panel dashboard
-- changing templates => consequences
