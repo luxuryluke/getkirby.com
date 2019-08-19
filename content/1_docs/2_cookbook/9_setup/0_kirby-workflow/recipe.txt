@@ -1,4 +1,4 @@
-Title: Kirby in a nutsheel
+Title: Kirby in a nutshell
 
 ----
 
@@ -6,7 +6,7 @@ Published: 2019-08-18
 
 ----
 
-Description: What you wished you had known when you started your first Kirby project.
+Description: Or what you wished you had known when you started your first Kirby project.
 
 ----
 
