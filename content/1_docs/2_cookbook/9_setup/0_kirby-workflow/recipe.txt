@@ -6,7 +6,7 @@ Published: 2019-08-18
 
 ----
 
-Description: Or what you wished you had known when you started your first Kirby project.
+Description: Or what you wish you had known when you started your first Kirby project.
 
 ----
 
@@ -126,20 +126,23 @@ Folder names (the so-called "slugs") are important as well. Folder names will be
 
 Examples:
 
-(here some examples)
+| Folder name           | Resulting URL
+| ----                  | ----
+| `projects`            | `https://yourdomain/projects`
+| `about-us`            | `https://yourdomain/about`
+| `photography/animals` | `https://yourdomain/photography/animals`
 
-Therefore, if you change the name of the folder (directly in the file system, through the Panel or programmatically), you also change the URL of the page. This doesn't matter so much during development, but can affect SEO if it happens in production or might result in outdated links.
+Therefore, if you change the name of the folder (directly in the file system, through the Panel or programmatically), you also change the URL of the page. This doesn't matter so much during development, but it has some implications to be aware of:
 
-There are also some other implications:
+- It can affect SEO and usability because of outdated links
+- Internal references are by default stored with their ID. That means, if you change the folder name, the reference you stored will no longer be valid.
+- The same is true if you use the ID to find a page in your templates, blueprints, controllers etc. with a query like `kirby.page("photography")` or its PHP equivalent.
+- If is also not uncommon to use page IDs as class names for styling. If the ID changes, the styles will no longer apply.
 
-- If you store references to a page, these are usually stored with their ID. That means, if you change the folder name, the reference you stored will no longer be valid.
-- The same is true if you use the ID to find a page in your templates, blueprints, controllers etc. with code like `kirby.page("photography")`.
-- If is also quite common to use page IDs as class names for styling. If the ID changes, the styles will no longer apply.
+There are ways to deal with or prevent such issues, for example:
 
-There are ways to deal with or prevent such issues, but you should be aware of them. 
-
-- To prevent invalid references, many people use a (link: https://github.com/bnomei/kirby3-autoid text: plugin) to create unique, permanent Auto-IDs for pages which are then stored instead of the default ID. 
-- The last two issues can be dealt with by preventing users from deleting or renaming a page, or by using other references like the intended template etc.
+- To prevent invalid references, you can use custom, uniquue permanent identifiers that you add manually or you can use a (link: https://github.com/bnomei/kirby3-autoid text: plugin) to create Auto-IDs which are then stored instead of the default ID. This permanent identifier can also be used to query pages.
+- Another option would be to prevent deleting or renaming pages, or by using other references like the intended template etc.
 
 ## Fields
 
