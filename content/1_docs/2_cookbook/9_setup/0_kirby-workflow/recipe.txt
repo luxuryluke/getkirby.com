@@ -174,6 +174,8 @@ Pages and files can be organized in the Panel using files/pags fields or files/p
 
 ### Pages section vs. pages field
 
+(screenshot: pages-section-vs-pages-field.png)
+
 #### Pages section
 
 - Shows a list of existing pages with an option to create new pages.
@@ -190,6 +192,8 @@ Pages and files can be organized in the Panel using files/pags fields or files/p
 - A typical use case is creating references between pages, e.g. to manually select related pages.
 
 ## Files section vs. files field
+
+(screenshot: files-section-vs-files-field.png)
 
 ### Files field
 
@@ -209,6 +213,40 @@ Pages and files can be organized in the Panel using files/pags fields or files/p
 - You can limit what type of files can be uploaded with the `accept` option in the given files template
 - Files are only uploaded to the given parent, the IDs of the uploaded files are not stored anywhere
 
+## Multi-section pages (type one-pager)
+
+One-pager websites or generally pages that contain different sections (often with repeating types of content) can be realized in multiple ways:
+
+- The sections are created as subpages of the parent page.
+- The sections are created using the (link: https://github.com/TimOetting/kirby-builder text: Tim Oetting's Builder plugin).
+
+Both approaches have their pros and cons.
+
+### Using subpages
+
+- Subpages can be as complex as needed and can themselves contain structure fields or subpages if needed.
+- Easier to handle if they contain a lot of content.
+- The URLs of these subpages are by default made available by the router, so all page sections end up with their own URL and you have to redirect them to the parent manually.
+- Without a plugin that allows you to skip the title, every subpage needs a title.
+
+Options to circumvent some disadvantages:
+
+- Store sections in their own sections subfolder.
+- Create models for these subpages that rewrite the URL.
+- Use a plugin that allows skipping the title when creating a new page.
+
+(add some links here)
+
+### Using the Builder plugin
+
+- All content is created in the same page
+- Nested content is possible but can get messy pretty fast
+- Easy creation of new blocks
+- Better preview of result
+- No redirecting involved
+
+(screeshot of builder)
+
 ## The media folder
 
 Why, how etc.
@@ -217,7 +255,5 @@ Why, how etc.
 ## Performance considerations
 
 ## Going beyond with Virtual pages
-
-
 
 
