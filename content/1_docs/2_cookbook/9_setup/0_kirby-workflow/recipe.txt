@@ -1,4 +1,4 @@
-Title: Kirby workflow considerations & tips
+Title: Kirby in a nutsheel
 
 ----
 
@@ -6,7 +6,7 @@ Published: 2019-08-18
 
 ----
 
-Description: Things to understand and keep in mind when creating a web project with Kirby
+Description: What you wished you had known when you started your first Kirby project.
 
 ----
 
@@ -20,7 +20,7 @@ So this recipe is not so much about best practices, it is rather a recap of how 
 
 Kirby is all about giving you the freedom and the tools to create what you want, the way you want–for yourself or your clients. The philosophy is to keep things as simple as possible and to add only what is needed. You can start with a very basic setup and then extend later when new requirements come up.
 
-However, this freedom to create also means that you basically start from scratch and then build your project step by step, a bit like building with Lego. It means that you need to know HTML and CSS, and some PHP (or be prepared to learn what you need along the way). While there are some themes out there for Kirby that can get you jump started (but not thousands of them), you will have to touch code to make changes if these themes don't fit your use case 100%. The idea is to empower you to create your own unique thing, not make your project look the same as thousands of others out there.
+However, this freedom to create also means that you basically start from scratch and then build your project step by step, a bit like building with Lego™. It means that you need to know the basics like HTML and CSS, and some PHP (or be prepared to learn what you need along the way). While there are some themes out there for Kirby that can get you jump-started (but not thousands of them), you will have to touch code to make changes if these themes don't fit your use case 100%. The idea behind Kirby is to empower you to create your own unique thing, not make your project look the same as thousands of others out there.
 
 ## All files and folders
 
@@ -79,7 +79,7 @@ Apart from these content folders, there is a second important folder in your ins
 
 These file names are important, because the whole Kirby system is based on file names. In fact, there is a strong tie between content and templates.
 
-If you create a page with a given content file name, this page will be renderend in the frontend with a PHP (glossary: template text: template) of the same name (if it exists, otherwise with the `default.php` template), only with the extension `.php`.
+If you create a page with a given content file name, this page will be rendered in the frontend with a PHP (glossary: template text: template) of the same name (if it exists, otherwise with the `default.php` template), only with the extension `.php`.
 
 In the same way, if you create a new page in the Panel with a (glossary:blueprint text: blueprint) called `whatever.yml`, the resulting content file name will be `whatever.txt`. Here are some examples:
 
@@ -103,6 +103,7 @@ Here are some questions that you might want to ask yourself:
 - Which page types need what sort of content? Some pages maybe only have a textarea field for long text, others might be a lot more structured with different types of content (glossary: field text: fields).
 - Which page types should share the same structure–and hence the same (glossary: blueprint text: blueprint)?
 - Are there any fields/tabs/sections that are always the same or appear in multiple areas, so that you can create blueprint "partials" for reuse?
+- What sort of global content do I need and where to store it ? (spoiler: in `site.txt`)
 
 The beauty is that all these different structures can be built with Kirby and there is hardly any limitation. You might not be able to answer all the question right from the beginning, but these types of questions can guide you when building the different parts of your site.
 
@@ -110,9 +111,9 @@ The beauty is that all these different structures can be built with Kirby and th
 <info>
 - You do not have to create this structure manually in the file system, you might just as well outline it in your head or on a piece of paper. 
 
-- Also, you can make changes any time (add/delete/restructure your page structure, add/delete fields etc.). But the more detailed your initial plan, the less work you might have with modifying stuff as you go along. If you remove a field from a blueprint, you probably want to (link: docs/cookbook/extensions/content-file-cleanup text: remove them from the content files) as well to get rid of outdated content and you probably have to make changes in templates, snippets or controllers as well.
+- Also, you can make changes any time (add/delete/restructure your page structure, add/delete fields etc.). But the more detailed your initial plan, the less work you will have with modifying stuff as you go along. If you remove a field from a blueprint, you probably want to (link: docs/cookbook/extensions/content-file-cleanup text: remove it and its value from the content files) as well to get rid of outdated content and you probably have to make changes in templates, snippets or controllers as well.
 
-- If structure is not your thing, you might as well just start building…
+- If structure is not your thing, just start building…
 </info>
 
 ## The implications of changing folder names
@@ -123,7 +124,7 @@ Examples:
 
 (here some examples)
 
-Therefore, if you change the name of the folder (directly in the file system, through the Panel or programmatically), you also change the URL of the page. This doesn't matter so much during development, but can affect SEO if it happens in production.
+Therefore, if you change the name of the folder (directly in the file system, through the Panel or programmatically), you also change the URL of the page. This doesn't matter so much during development, but can affect SEO if it happens in production or might result in outdated links.
 
 There are also some other implications:
 
@@ -133,10 +134,12 @@ There are also some other implications:
 
 There are ways to deal with or prevent such issues, but you should be aware of them. 
 
-- To prevent invalid references, many people use a plugin to create unique, permanent Auto-IDs for pages which are then stored instead of the default ID. 
+- To prevent invalid references, many people use a (link: https://github.com/bnomei/kirby3-autoid text: plugin) to create unique, permanent Auto-IDs for pages which are then stored instead of the default ID. 
 - The last two issues can be dealt with by preventing users from deleting or renaming a page, or by using other references like the intended template etc.
 
 ## Fields
+
+(screenshot: panel-form-fields.png)
 
 ### Field names
 Field names can sometimes lead to confusion. Ok, field names may only be alpha-numeric and contain underscores, that's one thing. But field names can also otherwise be a bit tricky. If, for example, you set up a `files` field like this:
@@ -164,11 +167,11 @@ There are basically two ways to deal with this:
 - Prevent such issues by generally prefixing all your field names: 
     `xy_image` instead of `image`
 
-## Field types
+### Field types
 
 - how field content is stored and what that means when changing types
 
-## Sections or fields
+## Sections or fields?
 
 Pages and files can be organized in the Panel using files/pags fields or files/pages sections. It is important to understand the difference between these two to make informed decisions when to use what.
 
@@ -191,11 +194,11 @@ Pages and files can be organized in the Panel using files/pags fields or files/p
 - Currently there is no option to create new pages from a pages field.
 - A typical use case is creating references between pages, e.g. to manually select related pages.
 
-## Files section vs. files field
+### Files section vs. files field
 
 (screenshot: files-section-vs-files-field.png)
 
-### Files field
+#### Files field
 
 - Select one or more files from a (larger) set of files
 - The ID(s) of the selected file(s) are stored in the page’s content file
@@ -205,7 +208,7 @@ Pages and files can be organized in the Panel using files/pags fields or files/p
 - The files set to select from can be defined using the `query` option; the `query` allows you to fetch files from different parents and to filter the set by any criteria; if no query is set, the field defaults to files of the current page
 - You can only upload to a single page; default parent is the current page
 
-### Files section
+#### Files section
 
 - Upload one or more files at once to a single parent
 - Files can only be uploaded to a single page; the destination is set with the `parent`option
@@ -257,3 +260,9 @@ Why, how etc.
 ## Going beyond with Virtual pages
 
 
+----
+Whatelse:
+
+## The Panel dashboard
+
+Titles: Kirby in a nutshell or what you wished you had known when you started your first Kirby project
