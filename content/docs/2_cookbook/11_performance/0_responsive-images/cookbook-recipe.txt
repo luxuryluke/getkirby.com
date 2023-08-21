@@ -503,7 +503,7 @@ So what are the main take-aways from the above?
 - (link: https://cloudfour.com/thinks/responsive-images-101-definitions/ text: Responsive Images 101)
 - (link: https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images text: MDN: Responsive images)
 - (link: https://css-tricks.com/a-guide-to-the-responsive-images-syntax-in-html/ text: A Guide to the Responsive Images Syntax in HTML)
-- (link: https://cloudinary.com/blog/introducing_intelligent_responsive_image_breakpoints_solutions text: Introducting responsive breakpoint solutions)
+- (link: https://cloudinary.com/blog/introducing_intelligent_responsive_image_breakpoints_solutions text: Introducing responsive breakpoint solutions)
 
 
 
