@@ -353,7 +353,7 @@ Area | View name
 `site` | `site`
 `site` | `site.file`
 `site` | `page`
-`site` | `page.file`
+`site.file?` | `page.file`
 `system` | `system`
 `users` | `user`
 `users` | `user.file`
